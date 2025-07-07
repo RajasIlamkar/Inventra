@@ -1,0 +1,154 @@
+.analysis-container {
+  max-width: 1000px;
+  margin: 1rem auto;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  color: #2d3748;
+  line-height: 1.5;
+}
+
+.analysis-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  color: #1a202c;
+  padding-bottom: 0.8rem;
+  font-weight: 700;
+}
+
+.analysis-container h3 {
+  margin-top: 0;
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+  color: #2d3748;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.analysis-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.8rem 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.analysis-list li {
+  background-color: #ffffff;
+  padding: 0.8rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: baseline;
+}
+
+.analysis-list li:hover {
+  background-color: #f8fafc;
+  border-color: #bfdbfe;
+}
+
+.analysis-list li strong {
+  font-weight: 600;
+  color: #1e40af;
+  font-size: 0.95rem;
+}
+
+.sentiment-positive {
+  color: #16a34a;
+  font-weight: 600;
+  background-color: #f0fdf4;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.sentiment-negative {
+  color: #dc2626;
+  font-weight: 600;
+  background-color: #fef2f2;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.sentiment-neutral {
+  color: #4b5563;
+  font-weight: 600;
+  background-color: #f3f4f6;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.chart-container {
+  height: 300px;
+  margin: 0.5rem 0 1rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background-color: #f9fafb;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  text-align: center;
+}
+
+.stat-card h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.3rem;
+}
+
+.stat-card p {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin: 0;
+}
+
+.dashboard-section {
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .analysis-container {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  
+  .analysis-container h2 {
+    font-size: 1.5rem;
+  }
+  
+  .analysis-list li {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+  }
+
+  .chart-container {
+    height: 250px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+}

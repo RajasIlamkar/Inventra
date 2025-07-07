@@ -1,0 +1,279 @@
+/* Base Styles */
+:root {
+  --primary-color: #4361ee;
+  --primary-hover: #3a56d4;
+  --secondary-color: #3f37c9;
+  --danger-color: #f50d0d;
+  --danger-hover: #ec0d0d;
+  --success-color: #4cc9f0;
+  --warning-color: #f81e1e;
+  --light-color: #f8f9fa;
+  --dark-color: #212529;
+  --gray-color: #6c757d;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+/* Layout container */
+.inventory-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem;
+  gap: 2rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Left: Heading + Form grouped together */
+.inventory-left {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  position: sticky;
+  top: 20px;
+}
+
+/* Heading styling */
+.inventory-left h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: var(--dark-color);
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.inventory-left h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--primary-color);
+  border-radius: 3px;
+}
+
+/* Form */
+.inventory-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background-color: white;
+  padding: 1.75rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.inventory-form input {
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  border: 1px solid #e0e0e0;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.inventory-form input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+}
+
+.inventory-form button {
+  padding: 0.85rem;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 0.5rem;
+}
+
+.inventory-form button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Right: Inventory Cards */
+.inventory-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.inventory-item {
+  list-style: none;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.inventory-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.inventory-item p {
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+  color: var(--dark-color);
+  line-height: 1.5;
+}
+
+.inventory-item strong {
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+/* Item status indicator */
+.inventory-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: var(--success-color);
+}
+
+.inventory-item.low-stock::before {
+  background: var(--warning-color);
+}
+
+.inventory-item.out-of-stock::before {
+  background: var(--danger-color);
+}
+
+/* Button container */
+.inventory-item > div:last-child {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  justify-content: flex-end;
+}
+
+/* Buttons */
+.edit-button,
+.delete-button {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: var(--border-radius);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.edit-button {
+  background-color: #f0f0f0;
+  color: var(--dark-color);
+}
+
+.edit-button:hover {
+  background-color: #e0e0e0;
+  color: var(--dark-color);
+}
+
+.delete-button {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: var(--danger-hover);
+  transform: translateY(-1px);
+}
+
+/* Stock status alerts */
+.low-stock-alert {
+  background-color: rgba(248, 150, 30, 0.1);
+  color: var(--warning-color);
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.low-stock-alert::before {
+  content: '⚠️';
+}
+
+.out-of-stock-alert {
+  background-color: rgba(247, 37, 133, 0.1);
+  color: var(--danger-color);
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.out-of-stock-alert::before {
+  content: '❌';
+}
+
+/* Quantity styling */
+.quantity-normal {
+  color: var(--dark-color);
+}
+
+.quantity-low {
+  color: var(--warning-color);
+  font-weight: 500;
+}
+
+.quantity-out {
+  color: var(--danger-color);
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .inventory-container {
+    flex-direction: column;
+  }
+  
+  .inventory-left {
+    width: 100%;
+    position: static;
+  }
+  
+  .inventory-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .inventory-container {
+    padding: 1.5rem;
+  }
+  
+  .inventory-list {
+    grid-template-columns: 1fr;
+  }
+}
