@@ -36,7 +36,7 @@ function Analysis() {
 
   useEffect(() => {
     const fetchAnalysis = async () => {
-      const res = await fetch('http://localhost:5000/api/analysis/groq', {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/analysis/groq`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -44,7 +44,7 @@ function Analysis() {
     };
 
     const fetchStats = async () => {
-      const res = await fetch('http://localhost:5000/api/analysis/stats', {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/analysis/stats`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
