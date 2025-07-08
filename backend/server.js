@@ -9,11 +9,20 @@ const analysisRoutes = require('./routes/analysisRoutes');
 const gmailRoutes = require('./routes/gmailRoutes');
 
 const app = express();
-app.use(cors({
-  origin: 'https://your-frontend-name.vercel.app',
-  credentials: true
-}));
+const allowedOrigins = [
+  'https://inventra-alpha.vercel.app', // your frontend
+];
 
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // optional: if you use cookies
+}));
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
