@@ -9,7 +9,7 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/orders', {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/orders`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -26,7 +26,7 @@ const Orders = () => {
   const handleFetchEmails = async () => {
     setFetchingEmails(true);
     try {
-      const res = await fetch('http://localhost:5000/api/gmail/fetch', {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/gmail/fetch`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -51,7 +51,7 @@ const Orders = () => {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       setUpdatingId(orderId);
-      const res = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/orders/${orderId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
