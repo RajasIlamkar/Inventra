@@ -16,7 +16,7 @@ function Inventory() {
 
   const fetchInventory = useCallback(async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/inventory', {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/inventory`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -44,8 +44,8 @@ function Inventory() {
     e.preventDefault();
     const method = editingId ? 'PUT' : 'POST';
     const url = editingId
-      ? `http://localhost:5000/api/inventory/${editingId}`
-      : 'http://localhost:5000/api/inventory';
+      ? `${process.env.REACT_APP_BACKEND_URL}/api/inventory/${editingId}`
+      : `${process.env.REACT_APP_BACKEND_URL}/api/inventor`;
 
     const normalizedFormData = {
       ...formData,
@@ -82,7 +82,7 @@ function Inventory() {
   };
 
   const handleDelete = async (id) => {
-    const res = await fetch(`http://localhost:5000/api/inventory/${id}`, {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/inventory/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
