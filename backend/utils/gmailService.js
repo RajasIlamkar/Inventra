@@ -1,6 +1,4 @@
-// ✅ server/utils/gmailService.js
-async function fetchEmails() {
-  const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const { google } = require('googleapis');
@@ -19,7 +17,6 @@ const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
 const MONGO_URI = process.env.MONGO_URI;
 
-// ✅ Use your central Order model
 const Order = require('../models/Order');
 
 // ----- Gmail OAuth2 Authorization -----
@@ -28,21 +25,25 @@ function authorize() {
   const { client_secret, client_id, redirect_uris } = credentials.web;
   const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
 
-  // ✅ Try to load token
+  // ✅ Load token if available
   if (fs.existsSync(TOKEN_PATH)) {
     const token = JSON.parse(process.env.GMAIL_TOKEN);
     oAuth2Client.setCredentials(token);
     return Promise.resolve(oAuth2Client);
   }
 
-  // 🧨 If no token, start OAuth flow (only works in CLI)
+  // ❌ In production, do not start a server
+  if (process.env.NODE_ENV === 'production') {
+    return Promise.reject(new Error('OAuth flow not available in production.'));
+  }
+
+  // ✅ Local-only OAuth flow
   return new Promise((resolve, reject) => {
     const authUrl = oAuth2Client.generateAuthUrl({
       access_type: 'offline',
       scope: SCOPES,
-      prompt: 'consent', 
+      prompt: 'consent',
     });
-    
 
     const server = http.createServer(async (req, res) => {
       if (req.url.includes('/oauth2callback')) {
@@ -66,11 +67,10 @@ function authorize() {
   });
 }
 
-
-// ----- LLaMA Parsing -----
+// ----- Extract order from email text using Groq -----
 async function extractOrderFromText(emailText) {
   const prompt = `
-You are an assistant that extracts structured order data from customer emails.(Convert the product string to singular if it is plural)
+You are an assistant that extracts structured order data from customer emails. (Convert product to singular form if plural)
 
 Email:
 """${emailText}"""
@@ -83,7 +83,6 @@ Respond ONLY with JSON in this format:
   ],
   "sentiment": "positive" | "neutral" | "negative"
 }
-
 `;
 
   const response = await axios.post(
@@ -104,18 +103,17 @@ Respond ONLY with JSON in this format:
   return JSON.parse(response.data.choices[0].message.content);
 }
 
-// ----- Fetch Emails + Save to DB -----
+// ----- Fetch Emails and Save Orders -----
 async function fetchEmails() {
   if (mongoose.connection.readyState === 0) {
-  await mongoose.connect(MONGO_URI);
-}
+    await mongoose.connect(MONGO_URI);
+  }
 
   console.log('✅ Connected to MongoDB');
 
   const auth = await authorize();
   const gmail = google.gmail({ version: 'v1', auth });
 
-  // ✅ Get user's Gmail profile
   const profileRes = await gmail.users.getProfile({ userId: 'me' });
   const userEmail = profileRes.data.emailAddress;
 
@@ -146,14 +144,13 @@ async function fetchEmails() {
       const fromHeader = data.payload.headers.find(h => h.name === 'From');
       const sender = fromHeader ? fromHeader.value : 'Unknown';
 
-
       const newOrder = new Order({
-        customerName: parsedOrder.customer || sender|| 'Unknown',
+        customerName: parsedOrder.customer || sender || 'Unknown',
         emailText: snippet,
         sentiment: parsedOrder.sentiment,
         items: parsedOrder.items,
         status: 'pending',
-        userEmail, // ✅ Now tracked
+        userEmail,
       });
 
       await newOrder.save();
@@ -164,12 +161,8 @@ async function fetchEmails() {
 
     console.log('---');
   }
-
-  
 }
 
-fetchEmails().catch(console.error);
-
-}
-
+// ✅ ONLY export, no direct execution
 module.exports = { fetchEmails };
+
