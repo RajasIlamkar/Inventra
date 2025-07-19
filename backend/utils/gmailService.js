@@ -22,50 +22,15 @@ const Order = require('../models/Order');
 // ----- Gmail OAuth2 Authorization -----
 function authorize() {
   const credentials = JSON.parse(process.env.GMAIL_CREDENTIALS);
-  const { client_secret, client_id, redirect_uris } = credentials.web;
+  const token = JSON.parse(process.env.GMAIL_TOKEN);
+
+  const { client_secret, client_id, redirect_uris } = credentials.installed || credentials.web;
   const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
 
-  // ✅ Load token if available
-  if (fs.existsSync(TOKEN_PATH)) {
-    const token = JSON.parse(process.env.GMAIL_TOKEN);
-    oAuth2Client.setCredentials(token);
-    return Promise.resolve(oAuth2Client);
-  }
-
-  // ❌ In production, do not start a server
-  if (process.env.NODE_ENV === 'production') {
-    return Promise.reject(new Error('OAuth flow not available in production.'));
-  }
-
-  // ✅ Local-only OAuth flow
-  return new Promise((resolve, reject) => {
-    const authUrl = oAuth2Client.generateAuthUrl({
-      access_type: 'offline',
-      scope: SCOPES,
-      prompt: 'consent',
-    });
-
-    const server = http.createServer(async (req, res) => {
-      if (req.url.includes('/oauth2callback')) {
-        const url = new URL(req.url, 'http://localhost:3000');
-        const code = url.searchParams.get('code');
-        res.end('Authentication successful! You can close this window.');
-        server.close();
-
-        try {
-          const { tokens } = await oAuth2Client.getToken(code);
-          oAuth2Client.setCredentials(tokens);
-          fs.writeFileSync(TOKEN_PATH, JSON.stringify(tokens));
-          resolve(oAuth2Client);
-        } catch (err) {
-          reject(err);
-        }
-      }
-    }).listen(3000, () => {
-      open(authUrl);
-    });
-  });
+  oAuth2Client.setCredentials(token);
+  return Promise.resolve(oAuth2Client);
 }
+
 
 // ----- Extract order from email text using Groq -----
 async function extractOrderFromText(emailText) {
