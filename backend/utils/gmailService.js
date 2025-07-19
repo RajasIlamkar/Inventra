@@ -24,13 +24,13 @@ const Order = require('../models/Order');
 
 // ----- Gmail OAuth2 Authorization -----
 function authorize() {
-  const credentials = JSON.parse(fs.readFileSync(CREDENTIALS_PATH));
+  const credentials = JSON.parse(process.env.GMAIL_CREDENTIALS);
   const { client_secret, client_id, redirect_uris } = credentials.web;
   const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
 
   // ✅ Try to load token
   if (fs.existsSync(TOKEN_PATH)) {
-    const token = JSON.parse(fs.readFileSync(TOKEN_PATH));
+    const token = JSON.parse(process.env.GMAIL_TOKEN);
     oAuth2Client.setCredentials(token);
     return Promise.resolve(oAuth2Client);
   }
