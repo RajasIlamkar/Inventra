@@ -45,7 +45,7 @@ function Inventory() {
     const method = editingId ? 'PUT' : 'POST';
     const url = editingId
       ? `${process.env.REACT_APP_BACKEND_URL}/api/inventory/${editingId}`
-      : `${process.env.REACT_APP_BACKEND_URL}/api/inventor`;
+      : `${process.env.REACT_APP_BACKEND_URL}/api/inventory`;
 
     const normalizedFormData = {
       ...formData,
